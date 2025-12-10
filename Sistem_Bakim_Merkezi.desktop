@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Sistem Bakım Merkezi
+Comment=Linux Sistem Bakım ve Optimizasyon Aracı
+Exec=gnome-terminal -- bash -c 'cd "/home/killer/Masaüstü/Python/sistem_bakim" && python3 app.py & sleep 2 && xdg-open http://localhost:5000 && wait'
+Icon=utilities-system-monitor
+Terminal=false
+Categories=System;Utility;
+StartupNotify=true

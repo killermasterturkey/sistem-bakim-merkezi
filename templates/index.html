@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Bakım Merkezi v1.1</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Giriş Ekranı -->
+    <div id="login-screen" class="login-screen">
+        <!-- Animated Background -->
+        <div class="login-bg">
+            <div class="login-bg-gradient"></div>
+            <div class="login-bg-grid"></div>
+            <div class="login-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+        </div>
+
+        <!-- Login Top Bar -->
+        <div class="login-top-bar">
+            <!-- Fullscreen Button -->
+            <button class="login-fullscreen-btn" id="login-fullscreen-btn" title="Tam Ekran">
+                <i class="fas fa-expand"></i>
+            </button>
+
+            <!-- Login Dil Seçici -->
+            <div class="login-language-selector" id="login-language-selector">
+                <button class="login-lang-btn" id="login-lang-btn">
+                    <i class="fas fa-globe"></i>
+                    <span id="login-current-lang">TR</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="login-lang-dropdown" id="login-lang-dropdown">
+                    <div class="login-lang-option active" data-lang="tr">
+                        <span class="lang-flag">🇹🇷</span>
+                        <span>Türkçe</span>
+                    </div>
+                    <div class="login-lang-option" data-lang="en">
+                        <span class="lang-flag">🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                    <div class="login-lang-option" data-lang="de">
+                        <span class="lang-flag">🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="login-lang-option" data-lang="fr">
+                        <span class="lang-flag">🇫🇷</span>
+                        <span>Français</span>
+                    </div>
+                    <div class="login-lang-option" data-lang="ru">
+                        <span class="lang-flag">🇷🇺</span>
+                        <span>Русский</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Card -->
+        <div class="login-wrapper">
+            <div class="login-container">
+                <!-- Logo Section -->
+                <div class="login-logo-section">
+                    <div class="logo-icon-wrapper">
+                        <div class="logo-icon-ring"></div>
+                        <div class="logo-icon">
+                            <i class="fas fa-shield-halved"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Header Section -->
+                <div class="login-header">
+                    <h1 data-i18n="app_title">Sistem Bakım Merkezi</h1>
+                    <div class="version-badge">
+                        <span class="version-dot"></span>
+                        <span>v2.0</span>
+                    </div>
+                    <p class="login-subtitle">Linux System Maintenance Tool</p>
+                </div>
+
+                <!-- Form Section -->
+                <form id="login-form" class="login-form">
+                    <div class="input-wrapper">
+                        <label class="input-label" for="sudo-password">
+                            <i class="fas fa-key"></i>
+                            <span data-i18n="sudo_password">Sudo Şifresi</span>
+                        </label>
+                        <div class="input-group">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="sudo-password" placeholder="••••••••" required autocomplete="off">
+                            <button type="button" class="toggle-password" id="toggle-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-btn">
+                        <span class="btn-content">
+                            <i class="fas fa-right-to-bracket"></i>
+                            <span data-i18n="login">Giriş Yap</span>
+                        </span>
+                        <span class="btn-loader">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                        </span>
+                    </button>
+
+                    <div id="login-error" class="login-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span class="error-text"></span>
+                    </div>
+                </form>
+
+                <!-- Footer Section -->
+                <div class="login-footer">
+                    <div class="footer-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <p data-i18n="login_info">Yönetici yetkileri için sudo şifrenizi girin</p>
+                </div>
+
+                <!-- Security Badge -->
+                <div class="login-security-badge">
+                    <i class="fas fa-lock"></i>
+                    <span>Güvenli Bağlantı</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Footer Info -->
+        <div class="login-bottom-info">
+            <span><i class="fab fa-linux"></i> Linux System Tool</span>
+            <span class="separator">•</span>
+            <span><i class="fas fa-code"></i> Open Source</span>
+        </div>
+    </div>
+
+    <!-- Ana Uygulama -->
+    <div id="main-app" class="main-app hidden">
+        <!-- Üst Bar -->
+        <header class="top-bar">
+            <div class="brand">
+                <i class="fas fa-laptop-medical"></i>
+                <span data-i18n="app_title">Sistem Bakım Merkezi</span>
+                <span class="version-tag">v2.0</span>
+            </div>
+            <div class="top-bar-right">
+                <button class="fullscreen-btn" id="fullscreen-btn" title="Tam Ekran" onclick="toggleFullscreen()">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <div class="language-selector" id="language-selector">
+                    <button class="lang-btn" id="lang-btn">
+                        <i class="fas fa-globe"></i>
+                        <span id="current-lang">TR</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <div class="lang-option active" data-lang="tr">
+                            <span class="lang-flag">🇹🇷</span>
+                            <span>Türkçe</span>
+                        </div>
+                        <div class="lang-option" data-lang="en">
+                            <span class="lang-flag">🇬🇧</span>
+                            <span>English</span>
+                        </div>
+                        <div class="lang-option" data-lang="de">
+                            <span class="lang-flag">🇩🇪</span>
+                            <span>Deutsch</span>
+                        </div>
+                        <div class="lang-option" data-lang="fr">
+                            <span class="lang-flag">🇫🇷</span>
+                            <span>Français</span>
+                        </div>
+                        <div class="lang-option" data-lang="ru">
+                            <span class="lang-flag">🇷🇺</span>
+                            <span>Русский</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="notification-toggle" id="notification-toggle" title="Masaüstü Bildirimleri">
+                    <i class="fas fa-bell"></i>
+                    <span class="toggle-status" data-i18n="notifications_off">Kapalı</span>
+                </div>
+                <div class="connection-status" id="connection-status">
+                    <span class="status-dot"></span>
+                    <span data-i18n="connected">Bağlı</span>
+                </div>
+                <button class="logout-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span data-i18n="logout">Çıkış</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Ana İçerik -->
+        <div class="app-container">
+            <!-- Sol Menü -->
+            <nav class="sidebar">
+                <ul class="nav-menu">
+                    <li class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-gauge-high"></i>
+                        <span data-i18n="menu_dashboard">Kontrol Paneli</span>
+                    </li>
+                    <li class="nav-item" data-section="performance">
+                        <i class="fas fa-chart-line"></i>
+                        <span data-i18n="menu_performance">Performans</span>
+                        <span class="nav-badge new" data-i18n="new_badge">Yeni</span>
+                    </li>
+                    <li class="nav-item" data-section="maintenance">
+                        <i class="fas fa-broom"></i>
+                        <span data-i18n="menu_maintenance">Bakım İşlemleri</span>
+                    </li>
+                    <li class="nav-item" data-section="optimization">
+                        <i class="fas fa-sliders"></i>
+                        <span data-i18n="menu_optimization">Optimizasyon</span>
+                        <span class="nav-badge new" data-i18n="new_badge">Yeni</span>
+                    </li>
+                    <li class="nav-item" data-section="scheduled">
+                        <i class="fas fa-calendar-check"></i>
+                        <span data-i18n="menu_scheduled">Zamanlanmış</span>
+                        <span class="nav-badge new" data-i18n="new_badge">Yeni</span>
+                    </li>
+                    <li class="nav-item" data-section="logs">
+                        <i class="fas fa-scroll"></i>
+                        <span data-i18n="menu_logs">Log Görüntüleyici</span>
+                        <span class="nav-badge new" data-i18n="new_badge">Yeni</span>
+                    </li>
+                    <li class="nav-item" data-section="updates">
+                        <i class="fas fa-download"></i>
+                        <span data-i18n="menu_updates">Güncellemeler</span>
+                    </li>
+                    <li class="nav-item" data-section="processes">
+                        <i class="fas fa-microchip"></i>
+                        <span data-i18n="menu_processes">Süreçler</span>
+                    </li>
+                    <li class="nav-item" data-section="services">
+                        <i class="fas fa-server"></i>
+                        <span data-i18n="menu_services">Servisler</span>
+                    </li>
+                    <li class="nav-item" data-section="disk">
+                        <i class="fas fa-hard-drive"></i>
+                        <span data-i18n="menu_disk">Disk Analizi</span>
+                    </li>
+                    <li class="nav-item" data-section="security">
+                        <i class="fas fa-shield-alt"></i>
+                        <span data-i18n="menu_security">Güvenlik</span>
+                    </li>
+                    <li class="nav-item" data-section="packages">
+                        <i class="fas fa-box"></i>
+                        <span data-i18n="menu_packages">Paketler</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- İçerik Alanı -->
+            <main class="content">
+                <!-- Dashboard -->
+                <section id="dashboard-section" class="section active">
+                    <h2 class="section-title">
+                        <i class="fas fa-gauge-high"></i>
+                        <span data-i18n="system_status">Sistem Durumu</span>
+                    </h2>
+
+                    <!-- Anlık İstatistikler -->
+                    <div class="stats-grid">
+                        <div class="stat-card cpu-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label" data-i18n="cpu_usage">CPU Kullanımı</span>
+                                <span class="stat-value" id="cpu-usage">0%</span>
+                                <div class="stat-bar">
+                                    <div class="stat-bar-fill" id="cpu-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-card memory-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label" data-i18n="memory_usage">Bellek Kullanımı</span>
+                                <span class="stat-value" id="memory-usage">0%</span>
+                                <div class="stat-bar">
+                                    <div class="stat-bar-fill" id="memory-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-card disk-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-hard-drive"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label" data-i18n="disk_usage">Disk Kullanımı</span>
+                                <span class="stat-value" id="disk-usage">0%</span>
+                                <div class="stat-bar">
+                                    <div class="stat-bar-fill" id="disk-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-card battery-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-battery-three-quarters" id="battery-icon"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label" data-i18n="battery_status">Pil Durumu</span>
+                                <span class="stat-value" id="battery-usage">0%</span>
+                                <div class="stat-bar">
+                                    <div class="stat-bar-fill" id="battery-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CPU Çekirdekleri -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-bar"></i>
+                            <span data-i18n="cpu_cores">CPU Çekirdekleri</span>
+                        </h3>
+                        <div class="cpu-cores" id="cpu-cores"></div>
+                    </div>
+
+                    <!-- Sistem Bilgileri -->
+                    <div class="info-grid">
+                        <div class="card">
+                            <h3 class="card-title">
+                                <i class="fas fa-desktop"></i>
+                                <span data-i18n="system_info">Sistem Bilgileri</span>
+                            </h3>
+                            <div class="info-list" id="system-info-list"></div>
+                        </div>
+                        <div class="card">
+                            <h3 class="card-title">
+                                <i class="fas fa-network-wired"></i>
+                                <span data-i18n="network_info">Ağ Bilgileri</span>
+                            </h3>
+                            <div class="info-list" id="network-info-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- Disk Bölümleri -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-hdd"></i>
+                            <span data-i18n="disk_partitions">Disk Bölümleri</span>
+                        </h3>
+                        <div class="disk-partitions" id="disk-partitions"></div>
+                    </div>
+                </section>
+
+                <!-- Performans Grafikleri -->
+                <section id="performance-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        <span data-i18n="performance_graphs">Performans Grafikleri</span>
+                        <span class="title-badge" data-i18n="realtime">Gerçek Zamanlı</span>
+                    </h2>
+
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-microchip"></i>
+                                <span data-i18n="cpu_history">CPU Kullanım Geçmişi</span>
+                            </h3>
+                            <div class="chart-container">
+                                <canvas id="cpu-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-memory"></i>
+                                <span data-i18n="memory_history">Bellek Kullanım Geçmişi</span>
+                            </h3>
+                            <div class="chart-container">
+                                <canvas id="memory-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-hard-drive"></i>
+                                <span data-i18n="disk_io">Disk I/O Hızı</span>
+                            </h3>
+                            <div class="chart-container">
+                                <canvas id="disk-io-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3 class="card-title">
+                                <i class="fas fa-network-wired"></i>
+                                <span data-i18n="network_traffic">Ağ Trafiği</span>
+                            </h3>
+                            <div class="chart-container">
+                                <canvas id="network-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card performance-stats">
+                        <h3 class="card-title">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span data-i18n="instant_perf_stats">Anlık Performans İstatistikleri</span>
+                        </h3>
+                        <div class="perf-stats-grid" id="perf-stats-grid">
+                            <div class="perf-stat">
+                                <span class="perf-label" data-i18n="disk_read">Disk Okuma</span>
+                                <span class="perf-value" id="disk-read-speed">0 MB/s</span>
+                            </div>
+                            <div class="perf-stat">
+                                <span class="perf-label" data-i18n="disk_write">Disk Yazma</span>
+                                <span class="perf-value" id="disk-write-speed">0 MB/s</span>
+                            </div>
+                            <div class="perf-stat">
+                                <span class="perf-label" data-i18n="net_download">Ağ İndirme</span>
+                                <span class="perf-value" id="net-download-speed">0 MB/s</span>
+                            </div>
+                            <div class="perf-stat">
+                                <span class="perf-label" data-i18n="net_upload">Ağ Yükleme</span>
+                                <span class="perf-value" id="net-upload-speed">0 MB/s</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bakım İşlemleri -->
+                <section id="maintenance-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-broom"></i>
+                        <span data-i18n="maintenance_ops">Bakım İşlemleri</span>
+                    </h2>
+
+                    <div class="action-grid">
+                        <div class="action-card featured" data-operation="full_maintenance">
+                            <div class="action-icon primary">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                            <h3 data-i18n="full_maintenance">Tam Bakım</h3>
+                            <p data-i18n="full_maintenance_desc">Tüm temizlik işlemlerini tek seferde gerçekleştir</p>
+                            <button class="action-btn primary" data-i18n="start">Başlat</button>
+                        </div>
+                        <div class="action-card" data-operation="clean_apt">
+                            <div class="action-icon">
+                                <i class="fas fa-box-archive"></i>
+                            </div>
+                            <h3 data-i18n="apt_cache_clean">APT Önbellek Temizliği</h3>
+                            <p data-i18n="apt_cache_clean_desc">Paket yöneticisi önbelleğini temizle</p>
+                            <button class="action-btn" data-i18n="clean">Temizle</button>
+                        </div>
+                        <div class="action-card" data-operation="clean_kernels">
+                            <div class="action-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <h3 data-i18n="remove_old_kernels">Eski Kernelleri Kaldır</h3>
+                            <p data-i18n="remove_old_kernels_desc">Kullanılmayan eski çekirdekleri sil</p>
+                            <button class="action-btn" data-i18n="remove">Kaldır</button>
+                        </div>
+                        <div class="action-card" data-operation="clean_journal">
+                            <div class="action-icon">
+                                <i class="fas fa-file-lines"></i>
+                            </div>
+                            <h3 data-i18n="clean_log_files">Log Dosyalarını Temizle</h3>
+                            <p data-i18n="clean_log_files_desc">Eski sistem loglarını temizle</p>
+                            <button class="action-btn" data-i18n="clean">Temizle</button>
+                        </div>
+                        <div class="action-card" data-operation="clean_tmp">
+                            <div class="action-icon">
+                                <i class="fas fa-folder-minus"></i>
+                            </div>
+                            <h3 data-i18n="clean_temp_files">Geçici Dosyaları Temizle</h3>
+                            <p data-i18n="clean_temp_files_desc">Tmp ve önbellek klasörlerini temizle</p>
+                            <button class="action-btn" data-i18n="clean">Temizle</button>
+                        </div>
+                        <div class="action-card" data-operation="clean_trash">
+                            <div class="action-icon">
+                                <i class="fas fa-trash-can"></i>
+                            </div>
+                            <h3 data-i18n="empty_trash">Çöp Kutusunu Boşalt</h3>
+                            <p data-i18n="empty_trash_desc">Silinen dosyaları kalıcı olarak kaldır</p>
+                            <button class="action-btn" data-i18n="empty">Boşalt</button>
+                        </div>
+                        <div class="action-card" data-operation="optimize_memory">
+                            <div class="action-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <h3 data-i18n="memory_optimization">Bellek Optimizasyonu</h3>
+                            <p data-i18n="memory_optimization_desc">RAM önbelleğini temizle</p>
+                            <button class="action-btn" data-i18n="optimize">Optimize Et</button>
+                        </div>
+                        <div class="action-card" data-operation="fix_packages">
+                            <div class="action-icon warning">
+                                <i class="fas fa-wrench"></i>
+                            </div>
+                            <h3 data-i18n="fix_broken_packages">Bozuk Paketleri Onar</h3>
+                            <p data-i18n="fix_broken_packages_desc">dpkg ve apt sorunlarını düzelt</p>
+                            <button class="action-btn" data-i18n="repair">Onar</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sistem Optimizasyonu -->
+                <section id="optimization-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-sliders"></i>
+                        <span data-i18n="system_optimization">Sistem Optimizasyonu</span>
+                    </h2>
+
+                    <!-- Hazır Profiller -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            <span data-i18n="optimization_profiles">Optimizasyon Profilleri</span>
+                        </h3>
+                        <p class="card-description" data-i18n="optimization_profiles_desc">Tek tıkla sisteminizi kullanım amacınıza göre optimize edin</p>
+                        <div class="preset-grid" id="preset-grid">
+                            <div class="preset-card" data-preset="desktop">
+                                <div class="preset-icon">
+                                    <i class="fas fa-desktop"></i>
+                                </div>
+                                <h4 data-i18n="desktop">Masaüstü</h4>
+                                <p data-i18n="desktop_desc">Günlük kullanım için dengeli ayarlar</p>
+                                <button class="preset-btn" data-i18n="apply">Uygula</button>
+                            </div>
+                            <div class="preset-card" data-preset="performance">
+                                <div class="preset-icon performance">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                <h4 data-i18n="performance">Performans</h4>
+                                <p data-i18n="performance_desc">Maksimum performans, daha fazla RAM kullanımı</p>
+                                <button class="preset-btn" data-i18n="apply">Uygula</button>
+                            </div>
+                            <div class="preset-card" data-preset="laptop">
+                                <div class="preset-icon laptop">
+                                    <i class="fas fa-laptop"></i>
+                                </div>
+                                <h4 data-i18n="laptop">Laptop</h4>
+                                <p data-i18n="laptop_desc">Pil ömrünü uzatan tasarruflu ayarlar</p>
+                                <button class="preset-btn" data-i18n="apply">Uygula</button>
+                            </div>
+                            <div class="preset-card" data-preset="server">
+                                <div class="preset-icon server">
+                                    <i class="fas fa-server"></i>
+                                </div>
+                                <h4 data-i18n="server">Sunucu</h4>
+                                <p data-i18n="server_desc">Kararlılık ve verimlilik odaklı</p>
+                                <button class="preset-btn" data-i18n="apply">Uygula</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manuel Ayarlar -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-cog"></i>
+                            <span data-i18n="advanced_settings">Gelişmiş Sistem Ayarları</span>
+                        </h3>
+                        <p class="card-description" data-i18n="advanced_settings_desc">Kernel parametrelerini manuel olarak ayarlayın</p>
+                        <div class="tweaks-container" id="tweaks-container">
+                            <div class="tweak-item">
+                                <div class="tweak-info">
+                                    <h4 data-i18n="swappiness">Swappiness</h4>
+                                    <p data-i18n="swappiness_desc">RAM dolduğunda swap kullanım agresifliği (0-100)</p>
+                                    <span class="current-value"><span data-i18n="current">Mevcut</span>: <span id="current-swappiness">-</span></span>
+                                </div>
+                                <div class="tweak-control">
+                                    <input type="range" id="swappiness-slider" min="0" max="100" value="60">
+                                    <span class="slider-value" id="swappiness-value">60</span>
+                                    <button class="apply-tweak-btn" data-tweak="swappiness" data-i18n="apply">Uygula</button>
+                                </div>
+                            </div>
+                            <div class="tweak-item">
+                                <div class="tweak-info">
+                                    <h4 data-i18n="vfs_cache">VFS Cache Pressure</h4>
+                                    <p data-i18n="vfs_cache_desc">Dosya sistemi önbellek baskısı (0-200)</p>
+                                    <span class="current-value"><span data-i18n="current">Mevcut</span>: <span id="current-vfs">-</span></span>
+                                </div>
+                                <div class="tweak-control">
+                                    <input type="range" id="vfs-slider" min="0" max="200" value="100">
+                                    <span class="slider-value" id="vfs-value">100</span>
+                                    <button class="apply-tweak-btn" data-tweak="vfs_cache_pressure" data-i18n="apply">Uygula</button>
+                                </div>
+                            </div>
+                            <div class="tweak-item">
+                                <div class="tweak-info">
+                                    <h4 data-i18n="dirty_ratio">Dirty Ratio</h4>
+                                    <p data-i18n="dirty_ratio_desc">Yazma önbelleği boyutu yüzdesi (1-50)</p>
+                                    <span class="current-value"><span data-i18n="current">Mevcut</span>: <span id="current-dirty">-</span></span>
+                                </div>
+                                <div class="tweak-control">
+                                    <input type="range" id="dirty-slider" min="1" max="50" value="20">
+                                    <span class="slider-value" id="dirty-value">20</span>
+                                    <button class="apply-tweak-btn" data-tweak="dirty_ratio" data-i18n="apply">Uygula</button>
+                                </div>
+                            </div>
+                            <div class="tweak-item">
+                                <div class="tweak-info">
+                                    <h4 data-i18n="io_scheduler">I/O Scheduler</h4>
+                                    <p data-i18n="io_scheduler_desc">Disk I/O zamanlama algoritması</p>
+                                    <span class="current-value"><span data-i18n="current">Mevcut</span>: <span id="current-scheduler">-</span></span>
+                                </div>
+                                <div class="tweak-control">
+                                    <select id="scheduler-select">
+                                        <option value="mq-deadline">mq-deadline (SSD/HDD)</option>
+                                        <option value="none">none (NVMe)</option>
+                                        <option value="bfq">bfq (HDD)</option>
+                                        <option value="kyber">kyber (SSD)</option>
+                                    </select>
+                                    <button class="apply-tweak-btn" data-tweak="io_scheduler" data-i18n="apply">Uygula</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Zamanlanmış Görevler -->
+                <section id="scheduled-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-calendar-check"></i>
+                        <span data-i18n="scheduled_maintenance">Zamanlanmış Bakım</span>
+                    </h2>
+
+                    <!-- Yeni Görev Ekleme -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-plus-circle"></i>
+                            <span data-i18n="new_scheduled_task">Yeni Zamanlanmış Görev</span>
+                        </h3>
+                        <div class="schedule-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label data-i18n="maintenance_type">Bakım Türü</label>
+                                    <select id="schedule-operation">
+                                        <option value="full_maintenance" data-i18n="full_maintenance">Tam Bakım</option>
+                                        <option value="clean_apt" data-i18n="apt_clean">APT Temizliği</option>
+                                        <option value="clean_journal" data-i18n="log_clean">Log Temizliği</option>
+                                        <option value="clean_tmp" data-i18n="tmp_clean">Tmp Temizliği</option>
+                                        <option value="clean_trash" data-i18n="trash_empty">Çöp Boşaltma</option>
+                                        <option value="optimize_memory" data-i18n="memory_optimization">Bellek Optimizasyonu</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label data-i18n="schedule">Zamanlama</label>
+                                    <select id="schedule-frequency">
+                                        <option value="daily" data-i18n="daily">Her Gün</option>
+                                        <option value="weekly" data-i18n="weekly">Haftalık</option>
+                                        <option value="monthly" data-i18n="monthly">Aylık</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label data-i18n="time">Saat</label>
+                                    <input type="time" id="schedule-time" value="03:00">
+                                </div>
+                            </div>
+                            <button class="action-btn primary" id="add-schedule-btn">
+                                <i class="fas fa-calendar-plus"></i>
+                                <span data-i18n="add_task">Görevi Ekle</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mevcut Görevler -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <i class="fas fa-list-check"></i>
+                            <span data-i18n="active_scheduled_tasks">Aktif Zamanlanmış Görevler</span>
+                        </h3>
+                        <div class="scheduled-tasks-list" id="scheduled-tasks-list">
+                            <div class="loading-placeholder">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <span data-i18n="tasks_loading">Görevler yükleniyor...</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Log Görüntüleyici -->
+                <section id="logs-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-scroll"></i>
+                        <span data-i18n="log_viewer">Log Görüntüleyici</span>
+                    </h2>
+
+                    <div class="card">
+                        <div class="log-controls">
+                            <div class="form-group">
+                                <label data-i18n="log_type">Log Türü</label>
+                                <select id="log-type">
+                                    <option value="syslog" data-i18n="syslog">Sistem (syslog)</option>
+                                    <option value="auth" data-i18n="auth_log">Kimlik Doğrulama</option>
+                                    <option value="kern" data-i18n="kern_log">Kernel</option>
+                                    <option value="dpkg" data-i18n="dpkg_log">Paket Yöneticisi</option>
+                                    <option value="boot" data-i18n="boot_log">Önyükleme</option>
+                                    <option value="journal" data-i18n="journal_log">Systemd Journal</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="line_count">Satır Sayısı</label>
+                                <select id="log-lines">
+                                    <option value="50" data-i18n="lines_50">50 Satır</option>
+                                    <option value="100" selected data-i18n="lines_100">100 Satır</option>
+                                    <option value="200" data-i18n="lines_200">200 Satır</option>
+                                    <option value="500" data-i18n="lines_500">500 Satır</option>
+                                </select>
+                            </div>
+                            <div class="form-group search-group">
+                                <label data-i18n="filter">Filtre</label>
+                                <input type="text" id="log-filter" data-i18n="keyword" placeholder="Anahtar kelime...">
+                            </div>
+                            <button class="action-btn" id="load-logs-btn">
+                                <i class="fas fa-search"></i>
+                                <span data-i18n="load_logs">Logları Yükle</span>
+                            </button>
+                            <button class="action-btn secondary" id="refresh-logs-btn">
+                                <i class="fas fa-sync"></i>
+                                <span data-i18n="refresh">Yenile</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card log-viewer-card">
+                        <div class="log-viewer-header">
+                            <span id="log-info" data-i18n="select_log_file">Log dosyası seçin ve yükleyin</span>
+                            <div class="log-actions">
+                                <button class="icon-btn" id="copy-logs-btn" data-i18n-title="copy" title="Kopyala">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="icon-btn" id="download-logs-btn" data-i18n-title="download" title="İndir">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="log-viewer" id="log-viewer">
+                            <div class="log-placeholder">
+                                <i class="fas fa-file-alt"></i>
+                                <p data-i18n="log_placeholder">Log içeriğini görmek için yukarıdan bir log türü seçip "Logları Yükle" butonuna tıklayın.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Güncellemeler -->
+                <section id="updates-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-download"></i>
+                        <span data-i18n="system_updates">Sistem Güncellemeleri</span>
+                    </h2>
+
+                    <div class="action-grid">
+                        <div class="action-card" data-operation="update_system">
+                            <div class="action-icon">
+                                <i class="fas fa-sync"></i>
+                            </div>
+                            <h3 data-i18n="check_updates">Güncellemeleri Kontrol Et</h3>
+                            <p data-i18n="check_updates_desc">Paket listesini güncelle ve güncellemeleri kontrol et</p>
+                            <button class="action-btn" data-i18n="check">Kontrol Et</button>
+                        </div>
+                        <div class="action-card featured" data-operation="full_upgrade">
+                            <div class="action-icon primary">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <h3 data-i18n="full_upgrade">Tam Güncelleme</h3>
+                            <p data-i18n="full_upgrade_desc">Tüm paketleri ve sistemi güncelle</p>
+                            <button class="action-btn primary" data-i18n="update">Güncelle</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Süreçler -->
+                <section id="processes-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-microchip"></i>
+                        <span data-i18n="running_processes">Çalışan Süreçler</span>
+                    </h2>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="process-search" data-i18n="search_process" placeholder="Süreç ara...">
+                            </div>
+                            <button class="refresh-btn" id="refresh-processes">
+                                <i class="fas fa-refresh"></i>
+                                <span data-i18n="refresh">Yenile</span>
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="pid">PID</th>
+                                        <th data-i18n="name">İsim</th>
+                                        <th data-i18n="user">Kullanıcı</th>
+                                        <th data-i18n="cpu_percent">CPU %</th>
+                                        <th data-i18n="memory_percent">Bellek %</th>
+                                        <th data-i18n="status">Durum</th>
+                                        <th data-i18n="action">İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="processes-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Servisler -->
+                <section id="services-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-server"></i>
+                        <span data-i18n="system_services">Sistem Servisleri</span>
+                    </h2>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <button class="refresh-btn" id="refresh-services">
+                                <i class="fas fa-refresh"></i>
+                                <span data-i18n="refresh">Yenile</span>
+                            </button>
+                        </div>
+                        <div class="services-grid" id="services-grid"></div>
+                    </div>
+                </section>
+
+                <!-- Disk Analizi -->
+                <section id="disk-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-hard-drive"></i>
+                        <span data-i18n="disk_analysis">Disk Analizi</span>
+                    </h2>
+
+                    <div class="action-grid">
+                        <div class="action-card" data-operation="check_disk">
+                            <div class="action-icon">
+                                <i class="fas fa-stethoscope"></i>
+                            </div>
+                            <h3 data-i18n="disk_health_check">Disk Sağlık Kontrolü</h3>
+                            <p data-i18n="disk_health_check_desc">SMART durumu ve dosya sistemi kontrolü</p>
+                            <button class="action-btn" data-i18n="check">Kontrol Et</button>
+                        </div>
+                        <div class="action-card" data-operation="analyze_disk">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h3 data-i18n="disk_usage_analysis">Disk Kullanım Analizi</h3>
+                            <p data-i18n="disk_usage_analysis_desc">En büyük dosya ve klasörleri bul</p>
+                            <button class="action-btn" data-i18n="analyze">Analiz Et</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Güvenlik -->
+                <section id="security-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-shield-alt"></i>
+                        <span data-i18n="security">Güvenlik</span>
+                    </h2>
+
+                    <div class="action-grid">
+                        <div class="action-card" data-operation="check_security">
+                            <div class="action-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3 data-i18n="security_scan">Güvenlik Taraması</h3>
+                            <p data-i18n="security_scan_desc">Sistem güvenliğini kontrol et</p>
+                            <button class="action-btn" data-i18n="scan">Tara</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Paketler -->
+                <section id="packages-section" class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-box"></i>
+                        <span data-i18n="installed_packages">Yüklü Paketler</span>
+                    </h2>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="package-search" data-i18n="search_package" placeholder="Paket ara...">
+                            </div>
+                            <button class="refresh-btn" id="refresh-packages">
+                                <i class="fas fa-refresh"></i>
+                                <span data-i18n="refresh">Yenile</span>
+                            </button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="package_name">Paket Adı</th>
+                                        <th data-i18n="version">Versiyon</th>
+                                        <th data-i18n="size">Boyut</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="packages-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Bildirim Toast -->
+        <div id="toast-container" class="toast-container"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

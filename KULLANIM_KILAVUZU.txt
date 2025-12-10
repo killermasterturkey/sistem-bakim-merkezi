@@ -1,0 +1,485 @@
+================================================================================
+                        SİSTEM BAKIM MERKEZİ
+                         KULLANIM KILAVUZU
+================================================================================
+
+                 Linux Sistem Bakım ve Optimizasyon Aracı
+                              Versiyon: 1.0.0
+
+================================================================================
+                              İÇİNDEKİLER
+================================================================================
+
+1. PROJE HAKKINDA
+2. SİSTEM GEREKSİNİMLERİ
+3. KURULUM
+4. PROGRAMI BAŞLATMA
+5. WEB ARAYÜZÜ KULLANIMI
+   5.1 Giriş Ekranı
+   5.2 Kontrol Paneli
+   5.3 Bakım İşlemleri
+   5.4 Güncellemeler
+   5.5 Süreç Yönetimi
+   5.6 Servis Yönetimi
+   5.7 Disk Analizi
+   5.8 Güvenlik
+   5.9 Paket Yönetimi
+6. BAKIM İŞLEMLERİ DETAYI
+7. SORUN GİDERME
+8. GÜVENLİK BİLGİLERİ
+9. TEKNİK DETAYLAR
+10. LİSANS
+
+================================================================================
+1. PROJE HAKKINDA
+================================================================================
+
+Sistem Bakım Merkezi, Linux tabanlı işletim sistemleri için geliştirilmiş
+kapsamlı bir bakım ve optimizasyon aracıdır.
+
+ÖZELLİKLER:
+-----------
+* Modern ve kullanıcı dostu web arayüzü
+* Tamamen Türkçe arayüz
+* Gerçek zamanlı sistem izleme
+* Otomatik ve manuel bakım işlemleri
+* Süreç ve servis yönetimi
+* Disk analizi ve sağlık kontrolü
+* Güvenlik taraması
+* Paket yönetimi
+
+DESTEKLENEN DAĞITIMLAR:
+-----------------------
+* Ubuntu 20.04, 22.04, 24.04 LTS
+* Linux Mint 20, 21
+* Debian 11, 12
+* Pop!_OS
+* Diğer Debian tabanlı dağıtımlar
+
+================================================================================
+2. SİSTEM GEREKSİNİMLERİ
+================================================================================
+
+MİNİMUM GEREKSİNİMLER:
+----------------------
+* İşletim Sistemi: Linux (Debian/Ubuntu tabanlı)
+* Python: 3.8 veya üzeri
+* RAM: 512 MB
+* Disk: 50 MB boş alan
+* Tarayıcı: Modern bir web tarayıcısı (Chrome, Firefox, Edge)
+
+GEREKLİ PYTHON PAKETLERİ:
+-------------------------
+* flask (3.0+)
+* flask-socketio (5.0+)
+* psutil (5.9+)
+
+================================================================================
+3. KURULUM
+================================================================================
+
+ADIM 1: Depoyu klonlayın veya indirin
+--------------------------------------
+git clone https://github.com/kullanici/sistem-bakim-merkezi.git
+cd sistem-bakim-merkezi
+
+ADIM 2: Bağımlılıkları yükleyin
+-------------------------------
+
+Seçenek A - APT ile (Önerilen):
+    sudo apt update
+    sudo apt install python3 python3-flask python3-psutil python3-flask-socketio
+
+Seçenek B - PIP ile:
+    pip3 install flask flask-socketio psutil
+
+Seçenek C - Requirements dosyası ile:
+    pip3 install -r requirements.txt
+
+ADIM 3: Çalıştırma iznini verin
+-------------------------------
+chmod +x baslat.sh
+chmod +x Sistem_Bakim_Merkezi.desktop
+
+================================================================================
+4. PROGRAMI BAŞLATMA
+================================================================================
+
+YÖNTEM 1: Terminal ile (Önerilen)
+---------------------------------
+./baslat.sh
+
+veya
+
+python3 app.py
+
+YÖNTEM 2: Masaüstü kısayolu ile
+-------------------------------
+1. Dosya yöneticisinde proje klasörünü açın
+2. "Sistem_Bakim_Merkezi.desktop" dosyasına çift tıklayın
+3. "Başlatmaya İzin Ver" seçeneğini onaylayın (ilk seferde)
+
+YÖNTEM 3: Doğrudan Python ile
+-----------------------------
+cd /proje/dizini
+python3 app.py
+
+PROGRAMI DURDURMAK İÇİN:
+------------------------
+Terminal penceresinde Ctrl+C tuşlarına basın.
+
+================================================================================
+5. WEB ARAYÜZÜ KULLANIMI
+================================================================================
+
+5.1 GİRİŞ EKRANI
+----------------
+Program başladığında tarayıcınızda http://localhost:5000 adresi açılır.
+
+* Sudo şifrenizi girin
+* "Giriş Yap" butonuna tıklayın
+* Şifre doğruysa ana panele yönlendirilirsiniz
+
+NOT: Şifreniz yalnızca oturum süresince bellekte tutulur ve asla kaydedilmez.
+
+5.2 KONTROL PANELİ
+------------------
+Sistem durumunuzu anlık olarak izleyebilirsiniz:
+
+ANLIK İSTATİSTİKLER:
+* CPU Kullanımı - İşlemci yük yüzdesi
+* Bellek Kullanımı - RAM kullanım durumu
+* Disk Kullanımı - Ana disk doluluk oranı
+* Pil Durumu - Laptop pil seviyesi (varsa)
+
+CPU ÇEKİRDEKLERİ:
+* Her çekirdeğin ayrı kullanım oranı
+* Gerçek zamanlı güncelleme
+
+SİSTEM BİLGİLERİ:
+* İşletim sistemi ve kernel versiyonu
+* Hostname ve çalışma süresi
+* İşlemci modeli ve özellikleri
+* Bellek ve swap bilgileri
+* Ekran kartı bilgisi
+
+AĞ BİLGİLERİ:
+* Ağ arayüzleri ve IP adresleri
+* Gönderilen/alınan veri miktarı
+
+DİSK BÖLÜMLERİ:
+* Tüm disk bölümlerinin listesi
+* Her bölümün kullanım durumu
+* Dosya sistemi türleri
+
+5.3 BAKIM İŞLEMLERİ
+-------------------
+Sistem temizlik ve optimizasyon araçları:
+
+* Tam Bakım - Tüm temizlik işlemlerini otomatik yapar
+* APT Önbellek Temizliği - Paket önbelleğini temizler
+* Eski Kernelleri Kaldır - Kullanılmayan çekirdekleri siler
+* Log Dosyalarını Temizle - Eski sistem loglarını siler
+* Geçici Dosyaları Temizle - /tmp ve cache temizliği
+* Çöp Kutusunu Boşalt - Silinen dosyaları kalıcı siler
+* Bellek Optimizasyonu - RAM önbelleğini temizler
+* Bozuk Paketleri Onar - dpkg/apt sorunlarını düzeltir
+
+5.4 GÜNCELLEMELER
+-----------------
+Sistem güncelleme işlemleri:
+
+* Güncellemeleri Kontrol Et - Paket listesini günceller
+* Tam Güncelleme - Tüm paketleri ve sistemi günceller
+
+5.5 SÜREÇ YÖNETİMİ
+------------------
+Çalışan süreçleri görüntüler ve yönetir:
+
+* PID, isim, kullanıcı bilgileri
+* CPU ve bellek kullanımı
+* Süreç durumu
+* Süreç sonlandırma (kill)
+* Arama/filtreleme
+
+5.6 SERVİS YÖNETİMİ
+-------------------
+Sistem servislerinin durumu:
+
+* Servis aktif/pasif durumu
+* Servisi yeniden başlatma
+* Önemli servislerin listesi
+
+5.7 DİSK ANALİZİ
+----------------
+Disk sağlık ve kullanım kontrolü:
+
+* SMART sağlık durumu
+* Dosya sistemi kullanımı
+* inode kullanımı
+* En büyük dizin ve dosyaların listesi
+
+5.8 GÜVENLİK
+------------
+Sistem güvenlik kontrolleri:
+
+* Güvenlik duvarı durumu
+* SSH yapılandırması
+* Güncellenmeyi bekleyen paketler
+* SUID dosyaları
+* Başarısız giriş denemeleri
+
+5.9 PAKET YÖNETİMİ
+------------------
+Yüklü paketlerin listesi:
+
+* Paket adı ve versiyonu
+* Kurulu boyut
+* Arama/filtreleme
+
+================================================================================
+6. BAKIM İŞLEMLERİ DETAYI
+================================================================================
+
+TAM BAKIM
+---------
+Aşağıdaki işlemleri sırasıyla otomatik gerçekleştirir:
+1. APT önbelleğini temizle
+2. Gereksiz paketleri kaldır
+3. Journal loglarını temizle
+4. Geçici dosyaları temizle
+5. Thumbnail önbelleğini temizle
+6. Belleği optimize et
+
+Tahmini süre: 1-5 dakika
+Kazanılan alan: 500 MB - 5 GB (sisteme göre değişir)
+
+APT ÖNBELLEK TEMİZLİĞİ
+----------------------
+Çalıştırılan komutlar:
+* apt-get clean
+* apt-get autoclean
+
+Temizlenen: /var/cache/apt/archives/ dizini
+
+ESKİ KERNEL TEMİZLİĞİ
+---------------------
+* Mevcut kernel korunur
+* Kullanılmayan eski kerneller silinir
+* En fazla 3 eski kernel tek seferde silinir
+
+UYARI: Sistem yeniden başlatıldığında sorun yaşamamak için
+       en az bir yedek kernel bırakılması önerilir.
+
+LOG TEMİZLİĞİ
+-------------
+* journalctl --vacuum-time=3d komutu çalıştırılır
+* 3 günden eski loglar silinir
+* Sistem logları etkilenir
+
+GEÇİCİ DOSYA TEMİZLİĞİ
+----------------------
+Temizlenen konumlar:
+* /tmp (7 günden eski dosyalar)
+* ~/.cache/thumbnails
+* ~/.cache/pip
+* Tarayıcı önbellekleri
+
+ÇÖP KUTUSU BOŞALTMA
+-------------------
+Temizlenen konum:
+* ~/.local/share/Trash/files
+* ~/.local/share/Trash/info
+
+BELLEK OPTİMİZASYONU
+--------------------
+Çalıştırılan komut:
+* sync && echo 1 > /proc/sys/vm/drop_caches
+
+Etki: Sayfa önbelleği temizlenir, RAM boşaltılır
+
+BOZUK PAKET ONARIMI
+-------------------
+Çalıştırılan komutlar:
+* dpkg --configure -a
+* apt-get install -f -y
+
+================================================================================
+7. SORUN GİDERME
+================================================================================
+
+SORUN: Program başlamıyor
+-------------------------
+Çözüm 1: Python yüklü mü kontrol edin
+    python3 --version
+
+Çözüm 2: Bağımlılıkları kontrol edin
+    python3 -c "import flask, flask_socketio, psutil"
+
+Çözüm 3: Port kullanımda mı kontrol edin
+    sudo lsof -i :5000
+
+SORUN: Tarayıcı açılmıyor
+-------------------------
+Çözüm: Tarayıcınızda manuel olarak açın
+    http://localhost:5000
+
+SORUN: Sudo şifresi kabul edilmiyor
+-----------------------------------
+Çözüm 1: Şifrenizi doğru girdiğinizden emin olun
+
+Çözüm 2: Kullanıcınızın sudo grubunda olduğunu kontrol edin
+    groups $USER
+
+Çözüm 3: sudo'nun çalıştığını test edin
+    sudo echo "test"
+
+SORUN: İşlemler başarısız oluyor
+--------------------------------
+Çözüm 1: Disk alanınızı kontrol edin
+    df -h
+
+Çözüm 2: İnternet bağlantınızı kontrol edin (güncellemeler için)
+    ping -c 3 google.com
+
+Çözüm 3: Konsol çıktısındaki hata mesajlarını okuyun
+
+SORUN: Sayfa yüklenmiyor veya donuyor
+-------------------------------------
+Çözüm 1: Sayfayı yenileyin (F5)
+
+Çözüm 2: Tarayıcı önbelleğini temizleyin (Ctrl+Shift+Delete)
+
+Çözüm 3: Programı yeniden başlatın
+
+SORUN: Bağlantı kopuyor
+-----------------------
+Çözüm: Terminal penceresinin açık olduğundan emin olun
+       Ctrl+C ile programı durdurmadığınızdan emin olun
+
+================================================================================
+8. GÜVENLİK BİLGİLERİ
+================================================================================
+
+ŞİFRE GÜVENLİĞİ:
+----------------
+* Sudo şifreniz yalnızca oturum süresince RAM'de tutulur
+* Şifre asla dosyaya yazılmaz veya loglanmaz
+* Çıkış yapıldığında veya program kapatıldığında şifre silinir
+* Konsol çıktılarında şifre maskelenir (***)
+
+AĞ GÜVENLİĞİ:
+-------------
+* Program yalnızca localhost üzerinde çalışır
+* Dış ağdan erişim varsayılan olarak kapalıdır
+* HTTPS kullanılmaz (localhost için gerekli değil)
+
+VERİ GİZLİLİĞİ:
+---------------
+* Kişisel veriler toplanmaz
+* Kullanım istatistikleri gönderilmez
+* Tüm işlemler yerel sistemde gerçekleşir
+* Log dosyaları oluşturulmaz
+
+ÖNERİLER:
+---------
+* Programı güvendiğiniz sistemlerde kullanın
+* Sudo şifrenizi başkalarıyla paylaşmayın
+* Tarayıcı sekmesini açık bırakmayın
+* İşlem bitince çıkış yapın
+
+================================================================================
+9. TEKNİK DETAYLAR
+================================================================================
+
+DOSYA YAPISI:
+-------------
+sistem-bakim-merkezi/
+├── app.py                         # Ana Flask uygulaması
+├── baslat.sh                      # Bash başlatıcı script
+├── Sistem_Bakim_Merkezi.desktop   # Linux masaüstü kısayolu
+├── requirements.txt               # Python bağımlılıkları
+├── README.md                      # GitHub readme dosyası
+├── LICENSE                        # MIT lisans dosyası
+├── KULLANIM_KILAVUZU.txt          # Bu dosya
+├── .gitignore                     # Git ignore dosyası
+├── templates/
+│   └── index.html                 # Web arayüzü HTML
+└── static/
+    ├── css/
+    │   └── style.css              # CSS stilleri
+    └── js/
+        └── app.js                 # JavaScript kodu
+
+KULLANILAN TEKNOLOJİLER:
+------------------------
+Backend:
+* Python 3.8+
+* Flask 3.0+ (Web framework)
+* Flask-SocketIO 5.0+ (WebSocket desteği)
+* psutil 5.9+ (Sistem bilgileri)
+
+Frontend:
+* HTML5
+* CSS3 (Modern tasarım)
+* JavaScript (ES6+)
+* Socket.IO (Gerçek zamanlı iletişim)
+* Font Awesome (İkonlar)
+* Google Fonts (Inter, JetBrains Mono)
+
+VARSAYILAN AYARLAR:
+-------------------
+* Port: 5000
+* Host: 0.0.0.0 (tüm arayüzler)
+* Debug: Kapalı
+* Log seviyesi: WARNING
+
+API ENDPOINTLERİ:
+-----------------
+GET  /                    - Ana sayfa
+POST /api/auth            - Kimlik doğrulama
+POST /api/logout          - Çıkış
+GET  /api/system-info     - Sistem bilgileri
+GET  /api/processes       - Süreç listesi
+GET  /api/services        - Servis listesi
+GET  /api/packages        - Paket listesi
+POST /api/kill-process/   - Süreç sonlandır
+POST /api/restart-service - Servis yeniden başlat
+
+WEBSOCKET OLAYLARI:
+-------------------
+run_operation      - İşlem başlat
+operation_status   - İşlem durumu
+operation_output   - İşlem çıktısı
+get_realtime_stats - Anlık istatistikler
+realtime_stats     - İstatistik verisi
+
+================================================================================
+10. LİSANS
+================================================================================
+
+MIT License
+
+Copyright (c) 2024
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+                             İYİ KULLANIMLAR!
+================================================================================
